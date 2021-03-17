@@ -7,7 +7,7 @@ const getCat = async () => {
   const response = await fetch(url + '/cat');
   const cats = await response.json();
   for (const cat of cats) {
-    const user = await getUser(cat.owner);
+    //const user = await getUser(cat.owner);
     ul.innerHTML += `
     <li>
         <h2>${cat.name}</h2>
@@ -16,7 +16,7 @@ const getCat = async () => {
         </figure>
         <p>Age: ${cat.age}</p>
         <p>Weight: ${cat.weight}kg</p>
-        <p>Owner: ${user.name}</p>
+        <p>Owner: ${cat.ownername}</p>
     </li>
     `;
   }

@@ -6,9 +6,9 @@ const userRoute = require('./routes/userRoute');
 const app = express();
 const port = 3000;
 
-app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(express.static('week2_public_html'));
 
 app.use('/cat', catRoute);

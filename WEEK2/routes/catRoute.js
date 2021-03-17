@@ -1,7 +1,13 @@
 'use strict';
 // catRoute
 const express = require('express');
-const {cat_list_get, cat_get} = require('../controllers/catController');
+const {
+  cat_list_get,
+  cat_get,
+  cat_create_post
+  ,cat_update_put
+  ,cat_delete
+} = require('../controllers/catController');
 const router = express.Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -9,26 +15,20 @@ const storage = multer.diskStorage({
     cb(null, './uploads/')
   },
   filename:  (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix)
+    cb(null, file.originalname)
   }
 })
 const upload = multer({ storage: storage });
 
-router.get('/', cat_list_get);
+router.route('/').
+get(cat_list_get).
+post(upload.single('cat'),cat_create_post)
+.put(cat_update_put);
 
-router.get('/:id', cat_get);
 
-router.post('/',upload.single('cat'), (req, res) => {
-  res.send('From this endpoint you can add cats.');
-});
+router.route('/:id')
+.get(cat_get)
+.delete(cat_delete);
 
-router.put('/', (req, res) => {
-  res.send('From this endpoint you can modify cats.');
-});
-
-router.delete('/', (req, res) => {
-  res.send('From this endpoint you can delete cats.');
-});
 
 module.exports = router;
