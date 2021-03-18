@@ -5,8 +5,6 @@ const {
   cat_list_get,
   cat_get,
   cat_create_post
-  ,cat_update_put
-  ,cat_delete
 } = require('../controllers/catController');
 const router = express.Router();
 const multer = require('multer');
@@ -20,15 +18,19 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage });
 
-router.route('/').
-get(cat_list_get).
-post(upload.single('cat'),cat_create_post)
-.put(cat_update_put);
+router.get('/', cat_list_get);
 
+router.get('/:id', cat_get);
 
-router.route('/:id')
-.get(cat_get)
-.delete(cat_delete);
+router.post('/', upload.single('cat'), cat_create_post);
+
+router.put('/', (req, res) => {
+  res.send('From this endpoint you can modify cats.');
+});
+
+router.delete('/', (req, res) => {
+  res.send('From this endpoint you can delete cats.');
+});
 
 
 module.exports = router;

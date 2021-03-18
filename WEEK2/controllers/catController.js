@@ -1,51 +1,27 @@
 'use strict';
 // catController
-const {getAllCats,getCat,addCat,updateCat,deleteCat} = require('../models/catModel');
+const catModel = require('../models/catModel');
 
-const cat_list_get = async (req, res) => {
-  const cats = await getAllCats();
-  await res.json(cats);
+const {cats} = catModel;
+
+const cat_list_get = (req, res) => {
+  res.json(cats);
 };
 
-const cat_get =  async (req, res) => {
-  let cat = await getCat(req.params.id);
-  await res.json(cat);
+const cat_get = (req, res) => {
+  const id = req.params.id;
+  const cat = cats.filter((cat) => cat.id === id).pop();
+  res.json(cat);
 };
 
-const cat_create_post = async (req, res) => {
-  const params = [
-    req.body.name,
-    req.body.age,
-    req.body.weight,
-    req.body.owner,
-    req.file.filename,
-];
-  const response =  await addCat(params);
-  await res.json(response);
-};
-
-const cat_update_put = async (req, res) => {
-  const params = [
-      req.body.name,
-      req.body.age,
-      req.body.weight,
-      req.body.owner,
-      req.body.id,
-  ];
-  const user = await updateCat(params);
-  await res.json(user);
-};
-
-const cat_delete = async (req, res) => {
-  const params = [req.params.id];
-  const cat = await deleteCat(params);
-  await res.json(cat);
+const cat_create_post = (req, res) => {
+  console.log('text data', req.body);
+  console.log('file data', req.file);
+  res.send('From this endpoint you can add cats.');
 };
 
 module.exports = {
   cat_list_get,
   cat_get,
   cat_create_post,
-  cat_update_put,
-  cat_delete
 };

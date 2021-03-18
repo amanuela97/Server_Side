@@ -1,31 +1,26 @@
 'use strict';
 // userController
 const userModel = require('../models/userModel');
-const {getAllUsers,getUser,addUser} = userModel;
 
-const user_list_get = async (req, res) => {
-  const users = await getAllUsers();
-  res.json(users.filter(user => {
-    delete user.password;
-    return user;
-  }));
+const {users} = userModel;
+
+const user_list_get = (req, res) => {
+  res.json(users);
 };
 
-const user_get = async (req, res) => {
-  const user = await getUser(req.params.id);
-  res.json(user.filter(property => {
-    delete property.password;
-    return property;
-  }));
+const user_get = (req, res) => {
+  const id = req.params.id;
+  const user = users.filter((user) => user.id === id).pop();
+  res.json(user);
 };
 
-const user_create_post = async (req, res) => {
-  const response =  await addUser(req.body);
-  res.json(response);
+const user_create_post = (req, res) => {
+  console.log(req.body);
+  res.send('From this endpoint you can add users.');
 };
 
 module.exports = {
   user_list_get,
   user_get,
-  user_create_post
+  user_create_post,
 };
